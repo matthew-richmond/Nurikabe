@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 /**
  * Nurikabe
- *
+ * Node to store information needed for Nurikabe Game
  * @author Matthew Richmond on 4/4/2017.
  * @version 1.0
  */

@@ -2,12 +2,11 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InterruptedIOException;
 import java.util.*;
 
 /**
  * A class to represent a single configuration in the Nurikabe puzzle.
- *
+ * Re-wrote this too many times.
  * @author Sean Strout @ RITCS
  * @author Matthew Richmond
  */
