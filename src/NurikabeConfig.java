@@ -102,6 +102,10 @@ public class NurikabeConfig implements Configuration {
     }
 
     @Override
+    /**
+     * Method to get the successors of a board
+     * checks for next empty space, adds the appropriate node at that point
+     */
     public Collection<Configuration> getSuccessors()
     {
         List<Configuration> succ = new LinkedList<>();
@@ -164,6 +168,12 @@ public class NurikabeConfig implements Configuration {
         return succ;
     }
 
+    /**
+     * Finds the next 'empty' node on a board
+     * @param startcor
+     * @return
+     */
+
     public int[] findnextempycoords(int[] startcor)
     {
         for (int r = startcor[0]; r<this.rows; r++)
@@ -180,6 +190,9 @@ public class NurikabeConfig implements Configuration {
         return null;
     }
     @Override
+    /**
+     * Checks to see if current configuration of board is valid or not
+     */
     public boolean isValid()
     {
         boolean complete = true;
@@ -252,6 +265,11 @@ public class NurikabeConfig implements Configuration {
         return true;
     }
 
+    /**
+     * a depth-first-search of island blocks, given a start node.
+     * @param startnode
+     * @return
+     */
     private boolean islandDFS(Node startnode)
     {
         List<Node> nodelist = new LinkedList<>();
@@ -275,6 +293,13 @@ public class NurikabeConfig implements Configuration {
         }
         return true;
     }
+
+    /**
+     * helper function for DFS
+     * @param nodelist
+     * @param neighbors
+     * @return
+     */
     private List<Node> IDFShelper(List<Node> nodelist, List<Node> neighbors)
     {
         for(Node x: neighbors)
@@ -287,6 +312,13 @@ public class NurikabeConfig implements Configuration {
         }
         return nodelist;
     }
+
+    /**
+     * A count-based DFS that returns the counted number of a node with given symbol
+     * @param startnode
+     * @param sym
+     * @return
+     */
     private int DFS(Node startnode,String sym)
     {
         List<Node> nodelist = new LinkedList<>();
@@ -295,6 +327,13 @@ public class NurikabeConfig implements Configuration {
         return nodelist.size();
     }
 
+    /**
+     * Helper method for counting DFS
+     * @param nodelist
+     * @param neighbors
+     * @param sym
+     * @return
+     */
     private List<Node> DFShelper(List<Node> nodelist, List<Node> neighbors, String sym)
     {
         for(Node x: neighbors)
@@ -314,6 +353,9 @@ public class NurikabeConfig implements Configuration {
     }
 
     @Override
+    /**
+     * checks if the given board is a solution to the game
+     */
     public boolean isGoal()
     {
         if(this.isValid())

@@ -19,6 +19,11 @@ public class Node
         this.symbol = symbol;
         this.neighbors = new LinkedList<>();
     }
+
+    /**
+     * adds the current node and the refered node to each others node lists
+     * @param neighbor
+     */
     public void addneighbor(Node neighbor)
     {
         this.neighbors.add(neighbor);
