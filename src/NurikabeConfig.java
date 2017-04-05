@@ -37,16 +37,6 @@ public class NurikabeConfig implements Configuration {
     public NurikabeConfig(String filename) throws FileNotFoundException {
         try (Scanner in = new Scanner(new File(filename)))
         {
-            String[] rowcol = in.nextLine().trim().split(" ");
-            this.seas = 0;
-            this.rows = Integer.parseInt(rowcol[0]);
-            this.cols = Integer.parseInt(rowcol[1]);
-            this.board = new char[this.rows][this.cols];
-            for (int row = 0; row < this.rows; row++)
-            {
-                char[] line = in.nextLine().trim().replaceAll(" ","").toCharArray();
-                this.board[row] = line;
-            }
         }
     }
 
@@ -59,197 +49,34 @@ public class NurikabeConfig implements Configuration {
 
     protected NurikabeConfig(NurikabeConfig other)
     {
-        this.seas = other.getSeas();
-        this.rows = other.getRows();
-        this.cols = other.getCols();
-        this.board = new char[this.rows][this.cols];
-        for(int row = 0; row<this.rows; row++)
-        {
-            for(int col = 0; col<this.cols; col ++)
-            {
-                this.board[row][col] = other.board[row][col];
-            }
-        }
+
     }
 
     @Override
     public Collection<Configuration> getSuccessors()
     {
-        List<Configuration> succ= new LinkedList<>();
-        NurikabeConfig suc1 = new NurikabeConfig(this);
-        NurikabeConfig suc2 = new NurikabeConfig(this);
-        for(int row = 0; row<this.rows; row++)
-        {
-            for(int col = 0; col<this.cols; col++)
-            {
-                if(this.board[row][col] == '.')
-                {
-                    suc1.board[row][col] = '@';
-                    suc1.seas += 1;
-                    succ.add(suc1);
-                    suc2.board[row][col] = '#';
-                    succ.add(suc2);
-                    return succ;
-                }
-            }
-        }
 
-        return new LinkedList<>();
     }
 
     @Override
     public boolean isValid()
     {
-        boolean complete = true;
-        int empties = 0;
-        for(int r = 0; r<this.rows; r ++)
-        {
-            for(int c = 0; c<this.cols; c++)
-            {
-                if(this.board[r][c] == '.')
-                {
-                    complete = false;
-                }
-            }
-        }
-        for(int row = 0; row<this.rows; row++) {
-            for (int col = 0; col < this.cols; col++)
-            {
-                char view = this.board[row][col];
-                if(view == '.')
-                {
-                    empties++;
-                }
-                else if(Character.isDigit(view))
-                {
-                    String ref = row + " " +col;
-                    int num_island = Character.getNumericValue(view);
-                    if(complete)
-                    {
-                        if (!(this.countcharDFS('#', ref) == num_island)) {
-                            return false;
-                        }
-                    }
-                    else
-                        return(this.countcharDFS('#',ref) <= num_island);
-                }
-                else if(view == '@')
-                {
 
-                }
-
-            }
-
-        }
-        if(complete)
-        {
-            String ref =  "";
-            for(int row = 0; row<this.rows; row++)
-            {
-                for (int col = 0; col < this.cols; col++)
-                {
-                    if(this.board[row][col] == '@')
-                    {
-                        ref = row + " " + col;
-                        if(row+1 < this.rows)
-                        {
-                            if(col+1 < this.cols)
-                            {
-                                if(this.board[row+1][col+1] == this.board[row][col])
-                                {
-                                    if(this.board[row+1][col] == this.board[row][col])
-                                    {
-                                        if(this.board[row][col+1] == this.board[row][col])
-                                        {
-                                            return false;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-
-                    }
-                }
-            }
-            return (countcharDFS('@',ref) == this.seas);
-
-        }
-        return true;
     }
 
     private int countcharDFS(char sym, String ref)
     {
-        Map<String,Character> map = new HashMap<>();
-        return countcharhelper(map,ref,sym).size();
+
     }
     private Map<int[], Character> countcharhelper(Map visited,String ref,char sym)
     {
-        String[] refs = ref.split(" ");
-        int row = Integer.parseInt(refs[0]);
-        int col = Integer.parseInt(refs[1]);
-        boolean ints = false;
-        if(!visited.containsKey(ref));
-        {
-            if (sym == '#')
-            {
-                ints = true;
-            }
-            if((this.board[row][col] == sym) || (Character.isDigit(this.board[row][col]) && ints))
-            {
-                visited.put(ref,sym);
-                if(row - 1 >= 0)
-                {
-                    String up = (row-1) + " " + col;
-                    if(this.board[row-1][col] == sym && !visited.containsKey(up))
-                    {
-                        countcharhelper(visited, up, sym);
-                    }
-                }
-                if(row + 1 < this.rows)
-                {
-                    String down = (row+1) + " " + col;
-                    if(this.board[row+1][col] == sym && !visited.containsKey(down))
-                    {
-                        countcharhelper(visited, down, sym);
-                    }
-                }
-                if(col - 1 >= 0)
-                {
-                    String left = row + " " + (col-1);
-                    if(this.board[row][col-1] == sym && !visited.containsKey(left))
-                    countcharhelper(visited,left,sym);
-                }
-                if(col+1 <this.cols)
-                {
-                    String right = row + " " + (col+1);
-                    if(this.board[row][col+1] == sym && !visited.containsKey(right))
-                    countcharhelper(visited,right,sym);
-                }
-            }
 
-        }
-        return visited;
     }
 
     @Override
-    public boolean isGoal() {
-        if(this.isValid())
-        {
-            for(int row = 0; row<this.rows;row++)
-            {
-                char[] line = this.board[row];
-                for(char x: line)
-                {
-                    if(x == '.')
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
+    public boolean isGoal()
+    {
+
     }
 
     /**
@@ -263,18 +90,7 @@ public class NurikabeConfig implements Configuration {
     @Override
     public String toString()
     {
-        String ret = "";
-        for (int row = 0; row<this.rows; row++)
-        {
-            char[] line = this.board[row];
-            for(char x: line)
-            {
-                ret += x + " ";
-            }
-            ret = ret.trim();
-            ret += "\n";
-        }
-        return ret.trim();
+
     }
 
     public int getRows(){return rows;}
